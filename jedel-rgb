@@ -1,9 +1,5 @@
 #!/bin/bash
 
-function switch {
-	modifier="$((! modifier))"
-}
-
 device=`sudo libinput list-devices | rg -A 1 'USB USB Keyboard$' | rg -o 'event[0-9]*'`
 input=`fd $device /sys/devices  | rg -o 'input[0-9]+'`
 
@@ -18,5 +14,5 @@ do
 sudo unbuffer showkey | rg --line-buffered '70 press' |
  xargs  -i 	echo $modifier | sudo tee /sys/class/leds/$input::scrolllock/brightness |
  xargs -i sudo pkill showkey
- switch
+ modifier="$((! modifier))"
 done
