@@ -8,3 +8,10 @@ This works as a daemon so keep it running.
 
 You'll have to reexecute it each reboot and each time u plug in your keyboard.
 
+### Dependencies
+
+- libinput
+- [rg](https://github.com/BurntSushi/ripgrep)
+- [fd](https://github.com/sharkdp/fd)
+- unbuffer (expect)
+- showkey
