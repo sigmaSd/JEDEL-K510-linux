@@ -7,10 +7,10 @@ function switch {
 device=`sudo libinput list-devices | rg -A 1 'USB USB Keyboard$' | rg -o 'event[0-9]*'`
 input=`fd $device /sys/devices  | rg -o 'input[0-9]+'`
 
-echo All set.
-
 current_state=`cat /sys/class/leds/$input::scrolllock/brightness`
 modifier="$((! current_state))"
+
+echo All set.
 
 while true
 do
