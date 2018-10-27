@@ -1,6 +1,13 @@
 #!/bin/bash
 
 device=`sudo libinput list-devices | rg -A 1 'USB USB Keyboard$' | rg -o 'event[0-9]*'`
+
+if [ -z $device ]
+then
+	echo Plug in keyboard then try again
+	exit 1
+fi
+
 input=`fd $device /sys/devices  | rg -o 'input[0-9]+'`
 
 current_state=`cat /sys/class/leds/$input::scrolllock/brightness`
