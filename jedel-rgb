@@ -1,23 +1,11 @@
 #!/bin/bash
 
-function change_mod {
-	if [ $modifier == '0' ]
-		then
-			modifier=1
-		else
-			modifier=0
-	fi
-}
-
 function switch {
-
-	echo $modifier | sudo tee /sys/class/leds/$input::scrolllock/brightness 	
-	modifier=`get_mod`
-	echo
+	modifier="$((! modifier))"
 }
 
 device=`sudo libinput list-devices | rg -A 1 'USB USB Keyboard$' | rg -o 'event[0-9]*'`
-input=`fd event15 /sys/devices  | rg -o 'input[0-9]+'`
+input=`fd $device /sys/devices  | rg -o 'input[0-9]+'`
 
 echo All set.
 
@@ -30,5 +18,5 @@ do
 sudo unbuffer showkey | rg --line-buffered '70 press' |
  xargs  -i 	echo $modifier | sudo tee /sys/class/leds/$input::scrolllock/brightness |
  xargs -i sudo pkill showkey
- change_mod
+ switch
 done
