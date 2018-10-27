@@ -15,5 +15,5 @@ sudo unbuffer showkey | rg --line-buffered '70 press' |
  xargs -i echo $modifier | sudo tee /sys/class/leds/$input::scrolllock/brightness |
  xargs -i sudo pkill showkey
 
-modifiermodifier="$((! modifier))"
+modifier="$((! modifier))"
 done
