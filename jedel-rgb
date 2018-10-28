@@ -1,5 +1,36 @@
 #!/bin/bash
+	
+function dep_test {
+	which $1 2>&1 | rg -o 'which: no' | xargs -i echo 1
+}
 
+function test_all {
+	cmds=("libinput" "rg" "fd" "unbuffer" "xargs" "showkey")
+	for cmd in "${cmds[@]}"
+	do
+		res=`dep_test $cmd`
+		if [ "$res" == "1" ]
+		then
+			echo $cmd is not installed
+			exit 1
+		fi
+	done
+}
+
+function check_rg {
+	ver=`rg --version | rg 10 | xargs -i echo 1`
+	if [ "$ver" != "1" ]
+	then
+		echo minimum rg version needed is 0.10.0
+		exit 1
+	fi
+}
+
+# Check dep
+test_all
+check_rg
+
+# Run
 device=`sudo libinput list-devices | rg -A 1 'USB USB Keyboard$' | rg -o 'event[0-9]*'`
 
 if [ -z $device ]
