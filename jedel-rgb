@@ -9,7 +9,6 @@ COMMANDS=(
 	)
 	
 function checkCommands() {    
-
     if [[ $(which --help 2>/dev/null) ]] && [[ $(echo --help 2>/dev/null) ]]; then
 
         local a=0
@@ -27,6 +26,15 @@ function checkCommands() {
     else
         exit 1
     fi
+}
+
+function check_rg {
+	ver=`rg --version | rg 10 | xargs -i echo 1`
+	if [ "$ver" != "1" ]
+	then
+		echo minimum rg version needed is 0.10.0
+		exit 1
+	fi
 }
 
 # Check dep
