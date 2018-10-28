@@ -10,7 +10,7 @@ You'll have to reexecute it each reboot and each time u plug in your keyboard.
 
 ### Dependencies
 - libinput
-- [rg](https://github.com/BurntSushi/ripgrep)
+- [rg](https://github.com/BurntSushi/ripgrep) (min 0.10.0)
 - [fd](https://github.com/sharkdp/fd)
 - unbuffer (expect)
 - showkey
