@@ -1,33 +1,36 @@
 #!/bin/bash
 	
-function dep_test {
-	which $1 2>&1 | rg -o 'which: no' | xargs -i echo 0
-}
+COMMANDS=(
+  	libinput
+  	rg
+  	fd
+	xargs
+	showkey
+	)
+	
+function checkCommands() {    
 
-function test_all {
-	cmds=("libinput" "rg" "fd" "unbuffer" "xargs" "showkey")
-	for cmd in "${cmds[@]}"
-	do
-		res=`dep_test $cmd`
-		if [ "$res" == "0" ]
-		then
-			echo $cmd is not installed
-			exit 1
-		fi
-	done
-}
+    if [[ $(which --help 2>/dev/null) ]] && [[ $(echo --help 2>/dev/null) ]]; then
 
-function check_rg {
-	ver=`rg --version | rg 10 | xargs -i echo 1`
-	if [ "$ver" != "1" ]
-	then
-		echo minimum rg version needed is 0.10.0
-		exit 1
-	fi
+        local a=0
+        for command in ${@}; do
+            if [[ ! $(which $command 2>/dev/null) ]]; then
+                COMMANDS_NOTFOUND[$a]=$command
+                let a++
+            fi
+        done
+
+        if [[ -n $COMMANDS_NOTFOUND ]]; then
+            echo -e "\nError! The following commands could not be found: ${COMMANDS_NOTFOUND[*]}\nAborting\n"
+            exit 1
+        fi
+    else
+        exit 1
+    fi
 }
 
 # Check dep
-test_all
+checkCommands "${COMMANDS[*]}"
 check_rg
 
 # Run
