@@ -6,6 +6,7 @@ COMMANDS=(
   	fd
 	xargs
 	showkey
+	unbuffer
 	)
 	
 function checkCommands() {    
